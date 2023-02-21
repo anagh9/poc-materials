@@ -81,29 +81,59 @@ function onSave(){
     },1000)
 }
 
+function changeFormData(){
+    let field_value_name  =$("#editField").val()
+    if(field_value_name){
+        console.log(field_value_name)
+        $("#editModelForm .close").click()
+        $('input#name').val(field_value_name);
+    }
+    // showAlert()
+}
+
 function showAlert(){
     const alertBox = document.querySelector('.alert');
     alertBox.style.display = 'block';
 }
 
-const getLocationBtn = document.getElementById('get-location-btn');
-const locationField = document.getElementById('geo_location');
+function changeName(){
+    let name = $('#name').val()
+    setEditField(name,"Enter new name")
+}
 
-getLocationBtn.addEventListener('click', () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      locationField.value = `${lat},${lng}`;
-    }, (error) => {
-      console.error(error);
-      alert('Failed to get location.');
-    });
-  } else {
-    alert('Geolocation is not supported by this browser.');
-  }
-});
+function setEditField(initialValue,placeholder){
+    $('#initialValue').val(initialValue);
+    $('#editField').attr("placeholder", placeholder) 
+}
 
+$('#get-location-btn').on('click',function(){
+    console.log("Focused")
+    let geoInitialVal = $('#geo_location').val()
+    $('#initialValueGeo').val(geoInitialVal)
+    $('#detectLocation').on('click',()=>{
+        console.log("Focused")
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            // locationField.value = `${lat},${lng}`;
+            $('#initialValueGeo').val(`${lat},${lng}`)
+            $('#editFieldGeo').val(`${lat},${lng}`)
+            $('#geo_location').val(`${lat},${lng}`)
+            setTimeout(()=>{
+                $("#editModelFormGeo .close").click()
+            },1000)
+
+            }, (error) => {
+            console.error(error);
+            alert('Failed to get location.');
+            });
+        } else {
+            alert('Geolocation is not supported by this browser.');
+        }
+    })
+
+})
 
 
 function editForm() {

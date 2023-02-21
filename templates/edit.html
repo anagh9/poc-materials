@@ -12,9 +12,79 @@
         .row{
             margin-bottom: 10px;
         }
+        @media (max-width: 700px) {
+            .col-sm-3{
+                margin: 10px 0 10px 0px;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <!-- modals  -->
+
+    <div class="modal fade" id="editModelForm" tabindex="-1" role="dialog" aria-labelledby="editModelForm" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Field</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="initialValue" name="initialValue" disabled>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="editField" name="editField" placeholder="Enter field value">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="changeFormData();">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modals  -->
+
+
+    <!-- geo_modals -->
+    <div class="modal fade" id="editModelFormGeo" tabindex="-1" role="dialog" aria-labelledby="editModelForm" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Field</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="initialValueGeo" name="initialValueGeo" disabled>
+                        </div>
+                        <div class="col-6 d-flex">
+                            <input type="text" class="form-control" id="editFieldGeo" name="editField" placeholder="Detect Current Location" disabled>
+                            <button class="btn btn-primary" id="detectLocation"><span><i class="fa fa-compass" aria-hidden="true"></i></span></button>
+                        </div>
+                        <p class="p-3">Wait for some second after click allow location </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="changeFormData();">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- geo_modals -->
+
+
+    <!-- nav  -->
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Navbar</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,6 +98,9 @@
           </ul>
         </div>
     </nav>
+    <!-- nav  -->
+
+      
     <div class="container alert-msg">
         <div class="alert alert-warning alert-dismissible fade show" role="alert" style="display: none;">
             Member Data successfully saved.
@@ -47,7 +120,11 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+                    <div class="d-flex">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" disabled>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModelForm" onclick="changeName();"><span><i class="fa fa-pencil" aria-hidden="true"></i></span></button>    
+                    </div>
+
                 </div>
                 <div class="col-sm-3">
                     <label for="dob">Date of Birth</label>
@@ -165,8 +242,8 @@
                 <div class="col-sm-6">
                     <label for="geo_location">Geo Location</label>
                     <div class="d-flex">
-                        <input type="text" class="form-control" id="geo_location" name="geo_location">
-                        <button type="button" id="get-location-btn" class="btn btn-primary"><span><i class="fa fa-compass" aria-hidden="true"></i></span></button>
+                        <input type="text" class="form-control" id="geo_location" name="geo_location" disabled>
+                        <button type="button" id="get-location-btn" class="btn btn-primary" data-toggle="modal" data-target="#editModelFormGeo" ><span><i class="fa fa-compass" aria-hidden="true"></i></span></button>
                     </div>
                 </div>
               </div>    
@@ -188,8 +265,8 @@
 
    
 
-    <!-- <script src="../static/bootstrap/js/jquery.slim.min.js"></script> -->
     <script src="../static/bootstrap/js/jquery-3.6.0.min.js"></script>
+    <!-- <script src="../static/bootstrap/js/jquery.slim.min.js"></script> -->
     <script src="../static/bootstrap/js/popper.min.js"></script>
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/js/script.js"></script>

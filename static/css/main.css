@@ -103,6 +103,10 @@ input[type="search"]{
     height: calc(100% - 73px);
 }
 
+.modal{
+    top: -20%;
+}
+
 @media (max-width: 450px) {
     .h-custom {
         height: 100%;
@@ -112,5 +116,11 @@ input[type="search"]{
 @media (max-width: 900px){
     .nav-item{
         text-align: center;
+    }
+    .login-img{
+        display: none;
+    }
+    .vh-100{
+        height: 52vh !important;
     }
 }
