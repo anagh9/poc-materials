@@ -10,7 +10,12 @@ function populateForm(){
                     return `<b>${data}</b>`
                 }
             },
-            { data: 'name' },
+            { 
+                data: 'name',
+                render: function(data,type,row){
+                    return `<a href="/templates/edit.html?id=${row.member_id}&view=true">${data}</a>`
+                }
+            },
             { data: 'company_name' },
             { data: 'mobile1' },
             { 
@@ -22,8 +27,9 @@ function populateForm(){
             { 
                 data: null,
                 render: function(data,type,row){
-                    return '<button class="btn btn-primary btn-sm mr-2" data-action="view" data-id="' + row.member_id + '"><span><i class="fa fa-eye" aria-hidden="true"></i></span></button>' +
-                    '<button class="btn btn-info btn-sm" data-action="edit" data-id="' + row.member_id + '"><span><i class="fa fa-pencil" aria-hidden="true"></i></span></button>';
+                    return '<button class="btn btn-info btn-sm" data-action="edit" data-id="' + row.member_id + '"><span><i class="fa fa-pencil" aria-hidden="true"></i></span></button>';
+                    // +
+                    // '<button class="btn btn-primary btn-sm mr-2" data-action="view" data-id="' + row.member_id + '"><span><i class="fa fa-eye" aria-hidden="true"></i></span></button>' 
                 }
             },
             ]
@@ -56,19 +62,6 @@ function setFormToReadOnly() {
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].style.display = "none";
     }
-
-    // $('#edit-form').submit(function(event) {
-    //     event.preventDefault();
-    //     const formData = $(this).serializeArray();
-    //     const newData = {};
-    //     formData.forEach(field => newData[field.name] = field.value);
-    //     const memberIndex = globalJsonData.findIndex(member => member.member_id == memberId);
-    //     if (memberIndex >= 0) {
-    //         globalJsonData[memberIndex] = {...globalJsonData[memberIndex], ...newData};
-    //         // save the updated data to a file or database as necessary
-    //         // redirect to the view page or some other page as necessary
-    //     }
-    // });
 }
 
 
