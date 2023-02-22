@@ -96,13 +96,15 @@ function changeName(){
 
 function setEditField(initialValue,placeholder){
     $('#initialValue').val(initialValue);
-    $('#editField').attr("placeholder", placeholder) 
+    // $('#editField').attr("placeholder", placeholder) 
+    $('#editField').val(initialValue) 
 }
 
 $('#get-location-btn').on('click',function(){
     console.log("Focused")
     let geoInitialVal = $('#geo_location').val()
     $('#initialValueGeo').val(geoInitialVal)
+    $('#editFieldGeo').val(geoInitialVal)
     $('#detectLocation').on('click',()=>{
         console.log("Focused")
         if (navigator.geolocation) {
@@ -113,9 +115,9 @@ $('#get-location-btn').on('click',function(){
             $('#initialValueGeo').val(`${lat},${lng}`)
             $('#editFieldGeo').val(`${lat},${lng}`)
             $('#geo_location').val(`${lat},${lng}`)
-            setTimeout(()=>{
-                $("#editModelFormGeo .close").click()
-            },1000)
+            // setTimeout(()=>{
+            //     $("#editModelFormGeo .close").click()
+            // },5000)
 
             }, (error) => {
             console.error(error);
@@ -127,6 +129,10 @@ $('#get-location-btn').on('click',function(){
     })
 
 })
+
+function dismiss(){
+    $("#editModelFormGeo .close").click()
+}
 
 
 function editForm() {
