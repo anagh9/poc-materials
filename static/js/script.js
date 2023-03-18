@@ -1,6 +1,7 @@
 function populateForm(){
-    $.getJSON("../../json/data.json", function(data) {
+    function populateTable(data) {
         jsonData = data
+        console.log(jsonData)
         var table = $('#mytable').DataTable({
             data: data,
             columns: [
@@ -13,7 +14,7 @@ function populateForm(){
             { 
                 data: 'name',
                 render: function(data,type,row){
-                    return `<a href="/templates/edit.html?id=${row.member_id}&view=true">${data}</a>`
+                    return `<a href="edit-form/${row.member_id}">${data}</a>`
                 }
             },
             { data: 'company_name' },
@@ -28,20 +29,19 @@ function populateForm(){
                 data: null,
                 render: function(data,type,row){
                     return '<button class="btn btn-info btn-sm" data-action="edit" data-id="' + row.member_id + '"><span><i class="fa fa-pencil" aria-hidden="true"></i></span></button>';
-                    // +
-                    // '<button class="btn btn-primary btn-sm mr-2" data-action="view" data-id="' + row.member_id + '"><span><i class="fa fa-eye" aria-hidden="true"></i></span></button>' 
                 }
             },
             ]
         });
-    });
+    }
+    populateTable(user_data)
 
     $('#mytable tbody').on('click', 'button', function() {
         var action = $(this).data('action');
         var id = $(this).data('id');
         console.log('Button clicked: ' + action + ', ID: ' + id);
         if(action==='edit'){
-            window.location.href = '/templates/edit.html?id='+id
+            window.location.href = '/edit-form/'+id
         }else{
             window.location.href =  `/templates/edit.html?id=${id}&view=true`
         }
@@ -69,20 +69,10 @@ function onSave(){
     window.scrollTo(0,0)
     showAlert();
     setTimeout(()=>{
-        // window.location.href = window.location.href+ '&view=true'
-        window.location.href = '/templates/table.html'
+        window.location.href = '/users'
     },1000)
 }
 
-function changeFormData(){
-    let field_value_name  =$("#editField").val()
-    if(field_value_name){
-        console.log(field_value_name)
-        $("#editModelForm .close").click()
-        $('input#name').val(field_value_name);
-    }
-    // showAlert()
-}
 
 function showAlert(){
     const alertBox = document.querySelector('.alert');
@@ -96,39 +86,59 @@ function changeName(){
 
 function setEditField(initialValue,placeholder){
     $('#initialValue').val(initialValue);
-    // $('#editField').attr("placeholder", placeholder) 
     $('#editField').val(initialValue) 
 }
 
 $('#get-location-btn').on('click',function(){
-    console.log("Focused")
     let geoInitialVal = $('#geo_location').val()
     $('#initialValueGeo').val(geoInitialVal)
     $('#editFieldGeo').val(geoInitialVal)
-    $('#detectLocation').on('click',()=>{
-        console.log("Focused")
+    $('#detectLocation').on('click',(event)=>{
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            // locationField.value = `${lat},${lng}`;
-            $('#initialValueGeo').val(`${lat},${lng}`)
-            $('#editFieldGeo').val(`${lat},${lng}`)
-            $('#geo_location').val(`${lat},${lng}`)
-            // setTimeout(()=>{
-            //     $("#editModelFormGeo .close").click()
-            // },5000)
-
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                $('#editFieldGeo').val(`${lat},${lng}`)
+                
             }, (error) => {
-            console.error(error);
-            alert('Failed to get location.');
+                alert('Failed to get location.');
+                console.log(error)
             });
         } else {
             alert('Geolocation is not supported by this browser.');
         }
     })
-
 })
+
+const geoSubmit = document.getElementById('geo_location_submit');
+
+geoSubmit.addEventListener("click", (e) => {
+    e.preventDefault();
+    let geoVal = $('#editFieldGeo').val();
+    let data = {"geoValue": geoVal};
+    fetch(`/geo-location/${user_obj.member_id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        location.reload();
+    })
+    .catch(error => {
+        location.reload();
+
+        console.error('Error occurred while posting data to Flask function:', error);
+    });
+});
+
 
 function dismiss(){
     $("#editModelFormGeo .close").click()
@@ -136,15 +146,9 @@ function dismiss(){
 
 
 function editForm() {
-        $.getJSON("../../json/data.json", function(data) {
-            const jsonData = data
-            const urlParams = new URLSearchParams(window.location.search);
-            const memberId = parseInt(urlParams.get('id'));
-            const view = urlParams.get('view');
-            if(view){
-                setFormToReadOnly()
-            }
-            const memberData = data.find(member => member.member_id == memberId);
+        function populateData(data) {
+            const memberData = data
+   
             if (memberData) {
                 $('#companyName').val(memberData.company_name);
                 $('#name').val(memberData.name);
@@ -180,9 +184,11 @@ function editForm() {
             
             $('#edit-form').submit(function(event) {
                 event.preventDefault();
-                // alert("Your Data has been saved")
             });
-        })
+        }
+
+        populateData(user_obj)
+
   }
   
   
