@@ -21,6 +21,7 @@ def login_required(f):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     users = {}
+    messages = None
     with open('data/login.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
@@ -32,8 +33,10 @@ def home():
         if mobile in users and users[mobile] == password:
             session['mobile'] = mobile
             return redirect(url_for('view_users'))
+        else:
+            messages = "Invalid Credentials!! Try Again"
 
-    return render_template('index.html')
+    return render_template('index.html', messages=messages)
 
 
 @app.route('/users')
@@ -55,26 +58,23 @@ def edit_form(id):
     obj = next((item for item in data if item['member_id'] == id), None)
 
     if request.method == "POST":
-        name = request.form.get("editField") or obj.get("name")
+        req_data = request.get_json()
+        name = req_data.get("name") or obj.get("name")
+        geo_location = req_data.get("geo_location") or obj.get("geo_location")
+
         obj['name'] = name
+        obj['geo_location'] = geo_location
         with open('data/data.json', 'w') as f:
             json.dump(data, f, indent=2)
     return render_template('edit.html', obj=obj, mobile=mobile)
 
 
-@app.route('/geo-location/<int:id>', methods=['POST'])
+@app.route('/geo-location-log/<int:id>', methods=['POST'])
 @login_required
-def geo_location(id):
-    with open('data/data.json', 'r') as f:
-        data = json.load(f)
-    obj = next((item for item in data if item['member_id'] == id), None)
-
+def geo_location_log(id):
     req_data = request.get_json()
-    geo_location = req_data.get("geoValue") or obj.get("geo_location")
-    obj['geo_location'] = geo_location
+    geo_location = req_data.get("geoValue")
     write_log_file(geo_location)
-    with open('data/data.json', 'w') as f:
-        json.dump(data, f, indent=2)
 
     return {"status": True}
 

@@ -49,28 +49,41 @@ function populateForm(){
     });
 }
 
-function setFormToReadOnly() {
-    const formElements = document.querySelectorAll('form input, form select, form textarea');
-  
-    formElements.forEach((element) => {
-      element.disabled = true;
+function postData(url, data) {
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .catch(error => {
+      console.error('Error occurred while posting data:', error);
     });
-    
-    let form = document.getElementById("edit-form");
-    let buttons = form.getElementsByTagName("button");
-
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].style.display = "none";
-    }
 }
 
 
 function onSave(){
+    let name = $('#name').val()
+    let geoVal = $('#editFieldGeo').val();
     window.scrollTo(0,0)
+    data = {'name':name, 'geo_location':geoVal}
+    postData(`/edit-form/${user_obj.member_id}`,data)
     showAlert();
-    setTimeout(()=>{
-        window.location.href = '/users'
-    },1000)
+}
+
+function changeFormData(){
+    let field_value_name  =$("#editField").val()
+    if(field_value_name){
+        $("#editModelForm .close").click()
+        $('input#name').val(field_value_name);
+    }
 }
 
 
@@ -99,6 +112,9 @@ $('#get-location-btn').on('click',function(){
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
                 $('#editFieldGeo').val(`${lat},${lng}`)
+                let geoVal = $('#editFieldGeo').val();
+                let data = {"geoValue": geoVal};
+                postData(`/geo-location-log/${user_obj.member_id}`, data)
                 
             }, (error) => {
                 alert('Failed to get location.');
@@ -113,30 +129,9 @@ $('#get-location-btn').on('click',function(){
 const geoSubmit = document.getElementById('geo_location_submit');
 
 geoSubmit.addEventListener("click", (e) => {
-    e.preventDefault();
     let geoVal = $('#editFieldGeo').val();
-    let data = {"geoValue": geoVal};
-    fetch(`/geo-location/${user_obj.member_id}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        location.reload();
-    })
-    .catch(error => {
-        location.reload();
-
-        console.error('Error occurred while posting data to Flask function:', error);
-    });
+    $('#geo_location').val(geoVal)
+    $("#editModelFormGeo .close").click()
 });
 
 

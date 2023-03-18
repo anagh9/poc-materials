@@ -2,7 +2,7 @@
   {
     "member_id": 1,
     "company_name": "Ramirez-Odom",
-    "name": "Diane Francis SNL",
+    "name": "Fiane Fitness",
     "dob": "2007-10-06",
     "dom": "1967-02-24",
     "blood_grp": "B+",
@@ -28,7 +28,7 @@
     "mobile2": 1045695653,
     "email1": "ryan88@example.org",
     "email2": "",
-    "geo_location": "48.5950505, 112.532411",
+    "geo_location": "26.9525,75.7105",
     "website": "https://www.miller.com/"
   },
   {
@@ -162,7 +162,7 @@
   {
     "member_id": 6,
     "company_name": "Anderson PLC",
-    "name": "Andrea Schneider",
+    "name": "Andrea Schneiderr",
     "dob": "1989-08-19",
     "dom": "1936-04-11",
     "blood_grp": "B+",
@@ -188,7 +188,7 @@
     "mobile2": 9704614528,
     "email1": "robin77@example.net",
     "email2": "",
-    "geo_location": "86.0609915, -107.689995",
+    "geo_location": "26.9525,75.7105",
     "website": "https://meyer.com/"
   },
   {
@@ -860,7 +860,7 @@
     "mobile2": 8573438372,
     "email1": "carlosterry@example.com",
     "email2": "",
-    "geo_location": "-38.3290015, -114.595044",
+    "geo_location": "26.9525,75.7105",
     "website": "http://www.scott.org/"
   },
   {

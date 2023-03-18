@@ -33,7 +33,7 @@
                 </button>
                 </div>
 
-                <form method="post">                    
+                <!-- <form method="post">                     -->
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-6">
@@ -46,9 +46,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+                        <button type="button" class="btn btn-primary" onclick="changeFormData();">Save changes</button>
                     </div>
-                </form>
+                <!-- </form> -->
             </div>
         </div>
     </div>
@@ -280,7 +281,7 @@
                   <textarea class="form-control" id="residence_address" name="residence_address"></textarea>
                 </div>
             </div>      
-            <!-- <button type="submit" class="btn btn-primary" onclick="onSave();">Save</button> -->
+            <button type="submit" class="btn btn-primary" onclick="onSave();">Save</button>
             <a href="/users" class="btn btn-danger">Cancel</a>
     </form>
     </div>

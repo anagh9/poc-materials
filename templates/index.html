@@ -24,6 +24,10 @@
       </div>
     </nav>
 
+    {% if messages %}
+      <div class="alert alert-danger" style="margin-top:-15px;">{{ messages }}</div>
+    {% endif %}
+
     <section class="vh-100 login">
         <div class="container-fluid h-custom">
           <div class="row d-flex justify-content-center align-items-center h-100">
