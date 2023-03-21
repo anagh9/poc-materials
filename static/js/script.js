@@ -49,24 +49,50 @@ function populateForm(){
     });
 }
 
-function postData(url, data) {
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => {
+// function postData(url, data) {
+//     return fetch(url, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(data)
+//     })
+//     .then(response=>{
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+//         return response.json();
+
+//     })
+//     .then(data=>{ 
+//         console.log(data);
+//         return data;
+//      })
+//     .catch(error => {
+//       console.error('Error occurred while posting data:', error);
+//     });
+// }
+
+async function postData(url, data) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      return response.json();
-    })
-    .catch(error => {
+      const responseData = await response.json();
+      console.log(responseData);
+      return responseData;
+    } catch (error) {
       console.error('Error occurred while posting data:', error);
-    });
-}
+      throw error;
+    }
+  }
 
 
 function onSave(){
@@ -108,13 +134,19 @@ $('#get-location-btn').on('click',function(){
     $('#editFieldGeo').val(geoInitialVal)
     $('#detectLocation').on('click',(event)=>{
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                $('#detectLocation').attr('disabled', true);
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
                 $('#editFieldGeo').val(`${lat},${lng}`)
                 let geoVal = $('#editFieldGeo').val();
                 let data = {"geoValue": geoVal};
-                postData(`/geo-location-log/${user_obj.member_id}`, data)
+                let res = await postData(`/geo-location-log/${user_obj.member_id}`, data);
+                setInterval(function(){
+                    if(res.status==true){
+                        $('#detectLocation').attr('disabled', false);
+                    }
+                }, 3000);
                 
             }, (error) => {
                 alert('Failed to get location.');
